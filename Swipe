@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LoveConnect - Find Your Perfect Match</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Landing Page / Login -->
+    <div id="landing-page" class="page active">
+        <nav class="navbar">
+            <div class="nav-container">
+                <div class="logo">💕 LoveConnect</div>
+                <button class="btn-secondary" onclick="showPage('login-page')">Sign In</button>
+            </div>
+        </nav>
+        
+        <div class="hero-section">
+            <div class="hero-content">
+                <h1 class="hero-title">Find Your Perfect Match</h1>
+                <p class="hero-subtitle">Connect with people who share your interests and values. Start your journey to love today.</p>
+                <div class="hero-buttons">
+                    <button class="btn-primary btn-large" onclick="showPage('signup-page')">Get Started</button>
+                    <button class="btn-secondary btn-large" onclick="showPage('login-page')">Sign In</button>
+                </div>
+            </div>
+            <div class="hero-image">
+                <div class="floating-card card-1">💑</div>
+                <div class="floating-card card-2">❤️</div>
+                <div class="floating-card card-3">💕</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Login Page -->
+    <div id="login-page" class="page">
+        <div class="auth-container">
+            <div class="auth-card">
+                <h2>Welcome Back</h2>
+                <p class="auth-subtitle">Sign in to continue your journey</p>
+                <form id="login-form" onsubmit="handleLogin(event)">
+                    <div class="form-group">
+                        <label for="login-email">Email</label>
+                        <input type="email" id="login-email" required placeholder="your@email.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="login-password">Password</label>
+                        <input type="password" id="login-password" required placeholder="••••••••">
+                    </div>
+                    <button type="submit" class="btn-primary btn-full">Sign In</button>
+                </form>
+                <p class="auth-footer">
+                    Don't have an account? <a href="#" onclick="showPage('signup-page')">Sign up</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Signup Page -->
+    <div id="signup-page" class="page">
+        <div class="auth-container">
+            <div class="auth-card">
+                <h2>Create Account</h2>
+                <p class="auth-subtitle">Join thousands finding love</p>
+                <form id="signup-form" onsubmit="handleSignup(event)">
+                    <div class="form-group">
+                        <label for="signup-name">Full Name</label>
+                        <input type="text" id="signup-name" required placeholder="John Doe">
+                    </div>
+                    <div class="form-group">
+                        <label for="signup-email">Email</label>
+                        <input type="email" id="signup-email" required placeholder="your@email.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="signup-password">Password</label>
+                        <input type="password" id="signup-password" required placeholder="••••••••">
+                    </div>
+                    <div class="form-group">
+                        <label for="signup-age">Age</label>
+                        <input type="number" id="signup-age" required min="18" max="100" placeholder="25">
+                    </div>
+                    <button type="submit" class="btn-primary btn-full">Create Account</button>
+                </form>
+                <p class="auth-footer">
+                    Already have an account? <a href="#" onclick="showPage('login-page')">Sign in</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main App -->
+    <div id="app-page" class="page">
+        <nav class="app-navbar">
+            <div class="nav-container">
+                <div class="logo">💕 LoveConnect</div>
+                <div class="nav-links">
+                    <button class="nav-link active" onclick="showAppSection('discover')">
+                        <span class="nav-icon">🔍</span> Discover
+                    </button>
+                    <button class="nav-link" onclick="showAppSection('matches')">
+                        <span class="nav-icon">💬</span> Matches
+                        <span class="badge" id="matches-badge" style="display: none;">0</span>
+                    </button>
+                    <button class="nav-link" onclick="showAppSection('profile')">
+                        <span class="nav-icon">👤</span> Profile
+                    </button>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Discover Section -->
+        <div id="discover-section" class="app-section active">
+            <div class="discover-container">
+                <h2 class="section-title">Discover People</h2>
+                <div id="card-stack" class="card-stack">
+                    <!-- Cards will be dynamically generated -->
+                </div>
+                <div class="action-buttons">
+                    <button class="action-btn dislike-btn" onclick="swipeCard('left')">✕</button>
+                    <button class="action-btn like-btn" onclick="swipeCard('right')">❤️</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Matches Section -->
+        <div id="matches-section" class="app-section">
+            <div class="matches-container">
+                <h2 class="section-title">Your Matches</h2>
+                <div id="matches-list" class="matches-list">
+                    <!-- Matches will be dynamically generated -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Profile Section -->
+        <div id="profile-section" class="app-section">
+            <div class="profile-container">
+                <h2 class="section-title">My Profile</h2>
+                <div class="profile-card">
+                    <div class="profile-header">
+                        <div class="profile-avatar" id="profile-avatar">👤</div>
+                        <button class="btn-secondary btn-small" onclick="editProfile()">Edit Profile</button>
+                    </div>
+                    <div class="profile-info">
+                        <h3 id="profile-name">Loading...</h3>
+                        <p id="profile-age">Age: -</p>
+                        <p id="profile-bio">No bio yet. Click edit to add one!</p>
+                    </div>
+                    <div class="profile-interests" id="profile-interests">
+                        <h4>Interests</h4>
+                        <div class="interest-tags" id="interest-tags">
+                            <!-- Interests will be added here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Profile Modal -->
+    <div id="edit-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Edit Profile</h2>
+                <button class="close-btn" onclick="closeEditModal()">×</button>
+            </div>
+            <form id="edit-form" onsubmit="saveProfile(event)">
+                <div class="form-group">
+                    <label for="edit-name">Name</label>
+                    <input type="text" id="edit-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="edit-age">Age</label>
+                    <input type="number" id="edit-age" required min="18" max="100">
+                </div>
+                <div class="form-group">
+                    <label for="edit-bio">Bio</label>
+                    <textarea id="edit-bio" rows="4" placeholder="Tell us about yourself..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Interests (click to add/remove)</label>
+                    <div class="interest-selector">
+                        <span class="interest-option" onclick="toggleInterest(this)">🎵 Music</span>
+                        <span class="interest-option" onclick="toggleInterest(this)">🎬 Movies</span>
+                        <span class="interest-option" onclick="toggleInterest(this)">📚 Reading</span>
+                        <span class="interest-option" onclick="toggleInterest(this)">🏃 Fitness</span>
+                        <span class="interest-option" onclick="toggleInterest(this)">🍳 Cooking</span>
+                        <span class="interest-option" onclick="toggleInterest(this)">✈️ Travel</span>
+                        <span class="interest-option" onclick="toggleInterest(this)">🎨 Art</span>
+                        <span class="interest-option" onclick="toggleInterest(this)">🎮 Gaming</span>
+                        <span class="interest-option" onclick="toggleInterest(this)">🏖️ Beach</span>
+                        <span class="interest-option" onclick="toggleInterest(this)">⛰️ Hiking</span>
+                    </div>
+                </div>
+                <button type="submit" class="btn-primary btn-full">Save Changes</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
+
+# OS Files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor directories and files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.project
+.classpath
+.settings/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# Build outputs
+dist/
+build/
+*.min.js
+*.min.css
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
+
+
